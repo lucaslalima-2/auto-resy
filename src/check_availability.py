@@ -68,8 +68,16 @@ def check_availability(location, restaurant, date, time, party_size):
       # Update location
       set_location(page)
 
+      # Wait for location update
+      page.wait_for_timeout(4000) # Give 4 seconds
+
       # Search
-      # page.fill("input.react-autosuggest__input", restaurant)
+      page.fill("input.react-autosuggest__input", restaurant)
+      page.wait_for_timeout(4000) # Give 4 seconds
+      page.keyboard.press("Enter") # Press enter key
+
+      # Need to follow this first href:
+      # <a class="Link SearchResult__container-link" href="cities/new-york-ny/venues/sawa?date=2025-10-02&amp;seats=2" data-test-id="search-result-link-details" tabindex="0"><h3 class="SearchResult__venue-name">Sawa</h3></a>
 
       # Pause
       page.pause()
@@ -77,4 +85,3 @@ def check_availability(location, restaurant, date, time, party_size):
       print(f"check_availability -> error when opening page: \n {e}")
       page.pause()
       return
-      
