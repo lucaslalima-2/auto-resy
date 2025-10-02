@@ -78,11 +78,11 @@ def check_availability(page, location, restaurant, date, time_window, party_size
     # Enter search
     page.keyboard.press("Enter") # Press enter key
 
-    # Click first link
-    wait_for_selector(page, "[data-test-id='search-result-link-details']", 6000)
-
     # Click the first result
-    page.click("[data-test-id='search-result-link-details']")
+    link = page.locator("[data-test-id='search-result-link-details']").first
+    link.scroll_into_view_if_needed()
+    link.wait_for(state="visible", timeout=10000)
+    link.click()
 
     # Update party size
     page.select_option("[data-test-id='dropdown-group-party-size']", value=str(party_size))
