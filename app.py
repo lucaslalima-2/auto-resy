@@ -26,9 +26,9 @@ def start_watching():
 # Background watcher
 def watch_reservations():
 	while True:
-		available = check_availability(**reservation_config)
-		if available:
-			run_resy_bot(**reservation_config)
+		page, available_res = check_availability(**reservation_config)
+		if available_res:
+			make_reservation(page, available_res)
 			break
 		time.sleep(60) # Checks every minute
 
