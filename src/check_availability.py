@@ -29,8 +29,20 @@ def add_credentials(page):
   page.click("button[type='submit']")
   return
 
+# Sets location
+def set_location(page):
+  # Step 1: Click the location selector
+  page.click("button[aria-label^='Location']")  # Matches "Location Jersey City"
+
+  # Step 2: Wait for the location list to appear
+  page.wait_for_selector("text=New York", timeout=5000)
+
+  # Step 3: Click on "New York"
+  page.click("text=New York")
+  return
+
 # Navigates resy page
-def check_availability(restaurant, date, time, party_size):
+def check_availability(location, restaurant, date, time, party_size):
   print(f"Checking availability for {restaurant} on {date} at {time} for {party_size} people...")
 
   with sync_playwright() as p:
@@ -48,8 +60,16 @@ def check_availability(restaurant, date, time, party_size):
       page.click("button.SmsViewSignInButton") # clicks sign-in option
 
       # Credentials
-      # page.wait_for_selector("input[name='email']", timeout=5000)
       add_credentials(page)
+
+      # Wait for login to complete
+      page.wait_for_timeout(8000) # Give 8 seconds
+
+      # Update location
+      set_location(page)
+
+      # Search
+      # page.fill("input.react-autosuggest__input", restaurant)
 
       # Pause
       page.pause()
