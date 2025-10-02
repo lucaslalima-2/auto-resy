@@ -6,6 +6,7 @@ import threading, time
 # Function
 from src.run_resy_bot import run_resy_bot
 from src.check_availability import check_availability
+from src.make_reservation import make_reservation
 
 # Store Flask app
 app = Flask(__name__)
@@ -27,8 +28,12 @@ def start_watching():
 def watch_reservations():
 	while True:
 		page, available_res = check_availability(**reservation_config)
-		if available_res:
+		print(page, available_res)
+		page.pause()
+		if page and available_res:
+			print("HERE!!")
 			make_reservation(page, available_res)
+			page.pause()
 			break
 		time.sleep(60) # Checks every minute
 
